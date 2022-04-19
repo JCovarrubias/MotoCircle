@@ -24,12 +24,16 @@ public class GameManager : MonoBehaviour
             m_OnStart = new UnityEvent();
 
         m_OnStart.AddListener(StartGame);
-
-        IsActive = true;
+        m_OnGameOver.AddListener(GameOver);
     }
 
     private void StartGame()
     {
         IsActive = true;
+    }
+
+    private void GameOver()
+    {
+        IsActive = false;
     }
 }
