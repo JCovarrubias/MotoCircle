@@ -25,11 +25,18 @@ public class ItemBehaviour : MonoBehaviour
     {
         if (m_OnCollision == null)
             m_OnCollision = new UnityEvent();
+
+        GameManager.Instance.m_OnGameOver.AddListener(OnGameOver);
     }
 
     public void MoveToY(float yPos, float time)
     {
         itemTransalte = LeanTween.moveY(gameObject, yPos, time);
+    }
+
+    private void OnGameOver()
+    {
+        m_OnCollision?.Invoke();
     }
 }
 

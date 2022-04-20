@@ -19,10 +19,10 @@ public class Spawner : MonoBehaviour
     {
         gameManager = GameManager.Instance;
         itemPool = ItemPool.Instance;
-        timeCounter = 0f;
-        spawnTime = 3f;
-        rightItemProb = 70;
-        itemSpeed = 2f;
+        ScoreManager.Instance.m_OnAddScore.AddListener(AdjustDifficulty);
+        gameManager.m_OnRestart.AddListener(InitValues);
+
+        InitValues();
     }
 
     private void Update()
@@ -45,5 +45,23 @@ public class Spawner : MonoBehaviour
         item.transform.localPosition = new Vector3(Random.Range(-1.7f, 1.7f), spawnerArea.transform.position.y, 0f);
         item.transform.eulerAngles = new Vector3(item.transform.eulerAngles.x, item.transform.eulerAngles.y, Random.Range(-25, 25));
         item.MoveToY(despawnerArea.transform.position.y, itemSpeed);
+    }
+
+    private void InitValues()
+    {
+        timeCounter = 0f;
+        spawnTime = 1f;
+        rightItemProb = 70;
+        itemSpeed = 2f;
+    }
+
+    private void AdjustDifficulty()
+    {
+        if (ScoreManager.Instance.Score % 3 == 0)
+        {
+            if (spawnTime > 0.3f) spawnTime -= 0.05f;
+            if (rightItemProb > 45) rightItemProb -= 5;
+            if (itemSpeed > 1.5f) itemSpeed -= 0.1f;
+        }
     }
 }

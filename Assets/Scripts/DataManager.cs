@@ -33,7 +33,7 @@ public class DataManager : MonoBehaviour
         get;
     }
 
-    public List<Messages> GeppMessages
+    public Message GeppMessage
     {
         private set;
         get;
@@ -52,31 +52,41 @@ public class DataManager : MonoBehaviour
 
     private void Start()
     {
-        if(UserData == null)
+
+        if (Application.isEditor || Debug.isDebugBuild)
         {
             UserData = new User()
             {
-                bestScore = 0,
+                bestScore = 18,
                 lives = 3,
-                name = "Player"
+                name = "Jorge"
             };
-            //LeaderboardUserPosition = 50;
-        }
+
+            LeaderboardData = new Leaderboard()
+            {
+                leaderboard = new List<LeaderboardRow>()
+                {
+                    new LeaderboardRow(){ place = 1, name="Juan", score = 20 },
+                    new LeaderboardRow(){ place = 2, name="Pablo", score = 19 },
+                    new LeaderboardRow(){ place = 3, name="Jorge", score = 18 },
+                    new LeaderboardRow(){ place = 4, name="Erick", score = 17 },
+                    new LeaderboardRow(){ place = 5, name="Laura", score = 16 },
+                    new LeaderboardRow(){ place = 6, name="Sofía", score = 15 },
+                    new LeaderboardRow(){ place = 7, name="Victor", score = 14 },
+                    new LeaderboardRow(){ place = 8, name="Andres", score = 13 },
+                    new LeaderboardRow(){ place = 9, name="Valerdi", score = 12 },
+                    new LeaderboardRow(){ place = 10, name="Cobo", score = 11 },
+                }
+            };
+        }     
     }
 
     public void NotifyGameStart() => StartGame();
 
     public void SetUserData(string jsonData)
     {
-        Debug.Log(jsonData);
         UserData = JsonUtility.FromJson<User>(jsonData);
         //LeaderBoard.FillUserData(UserData);
-    }
-
-    public void SetUserLeaderboardPosition(int pos)
-    {
-        Debug.Log("User leaderboard position "+pos);
-        //LeaderboardUserPosition = pos;
     }
 
     public void SetLeaderboardData(string jsonData)
@@ -87,22 +97,23 @@ public class DataManager : MonoBehaviour
 
     public void SetMessages(string jsonData)
     {
-        GeppMessages = JsonUtility.FromJson<List<Messages>>(jsonData);
+        GeppMessage = JsonUtility.FromJson<Message>(jsonData);
         //GEPPMessagesWindow.Instance.FillMessage(GeppMessages[0].message);
     }
 
     public void SendResults()
     {
-        /*GameResult gameResult = new GameResult {
-            score = GameManager.Instance.Score,
+        GameResult gameResult = new GameResult
+        {
+            score = ScoreManager.Instance.Score,
             lives = GameManager.Instance.Lives,
             minutes = 1,
             seconds = 1,
         };
         string gameResultJson = JsonUtility.ToJson(gameResult);
 
-        if(Application.platform == RuntimePlatform.WebGLPlayer)
-            SendGameResult(gameResultJson.ToString());*/
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+            SendGameResult(gameResultJson.ToString());
     }
 
     public void EndGame()
@@ -113,24 +124,14 @@ public class DataManager : MonoBehaviour
         TimeSpent timeSpent = new TimeSpent
         {
             minutes = minutes,
-            seconds = seconds
+            seconds = seconds,
+            destination = GeppMessage.destination != null && GameManager.Instance.Lives == 0 ? GeppMessage.destination : null,
         };
 
         string timeSpentJson = JsonUtility.ToJson(timeSpent);
 
         if(Application.platform == RuntimePlatform.WebGLPlayer)
             ExitGame(timeSpentJson.ToString());
-    }
-
-    public void GetEvent(string eventName)
-    {
-        GameEvent gameEvent = new GameEvent()
-        {
-            eventName = eventName
-        };
-
-        if(Application.platform == RuntimePlatform.WebGLPlayer)
-            SendGameEvent(JsonUtility.ToJson(gameEvent));
     }
 }
 
@@ -153,12 +154,11 @@ public class LeaderboardRow
 [Serializable]
 public class Leaderboard
 {
-    public int PlayerPosition;
     public List<LeaderboardRow> leaderboard;
 }
 
 [Serializable]
-public class Messages
+public class Message
 {
     public string message;
     public string destination;
@@ -178,6 +178,7 @@ public class TimeSpent
 {
     public int minutes;
     public int seconds;
+    public string destination;
 }
 
 [Serializable]

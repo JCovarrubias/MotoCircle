@@ -58,7 +58,7 @@ public class TruckBehaviour : MonoBehaviour
             item.m_OnCollision?.Invoke();
 
             if (item.Type == ItemType.RIGHT)
-                ScoreManager.Instance.Score += 1;
+                ScoreManager.Instance.Score = 1;
             else
                 gameManager.m_OnGameOver?.Invoke();
         }

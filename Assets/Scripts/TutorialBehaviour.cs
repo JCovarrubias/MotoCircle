@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class TutorialBehaviour : MonoBehaviour
 {
+    private void OnEnable()
+    {
+        GameManager.Instance.TutorialPlaying = true;
+    }
+
     private void Start()
     {
         GameManager.Instance.m_OnStart.AddListener(OnStartGame);

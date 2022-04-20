@@ -89,7 +89,7 @@ namespace DigitalRubyShared
                 if (CanDrag(hit.gameObject))
                 {
                     // store the drag state along with an offset to reposition relative to the touch point and object center
-                    if (!GameManager.Instance.IsActive) GameManager.Instance.m_OnStart?.Invoke();
+                    if (!GameManager.Instance.IsActive && GameManager.Instance.TutorialPlaying) GameManager.Instance.m_OnStart?.Invoke();
                     DragState state = new DragState
                     {
                         GameObject = hit.gameObject,
