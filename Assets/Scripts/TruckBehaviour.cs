@@ -7,6 +7,8 @@ public class TruckBehaviour : MonoBehaviour
 {
     [SerializeField] List<GameObject> wheels;
     [SerializeField] FingersMultiDragComponentScript drag;
+    [SerializeField] AudioSource rightItemSound;
+    [SerializeField] AudioSource wrongItemSound;
 
     private GameManager gameManager;
     private GameObject truck;
@@ -58,9 +60,15 @@ public class TruckBehaviour : MonoBehaviour
             item.m_OnCollision?.Invoke();
 
             if (item.Type == ItemType.RIGHT)
+            {
                 ScoreManager.Instance.Score = 1;
+                rightItemSound.Play();
+            }
             else
+            {
                 gameManager.m_OnGameOver?.Invoke();
+                wrongItemSound.Play();
+            }
         }
     }
 

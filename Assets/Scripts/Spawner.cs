@@ -44,6 +44,7 @@ public class Spawner : MonoBehaviour
         ItemBehaviour item = itemPool.GetItem(itemType);
         item.transform.localPosition = new Vector3(Random.Range(-1.7f, 1.7f), spawnerArea.transform.position.y, 0f);
         item.transform.eulerAngles = new Vector3(item.transform.eulerAngles.x, item.transform.eulerAngles.y, Random.Range(-25, 25));
+        item.gameObject.SetActive(true);
         item.MoveToY(despawnerArea.transform.position.y, itemSpeed);
     }
 

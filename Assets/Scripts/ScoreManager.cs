@@ -8,6 +8,7 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager Instance;
 
     public UnityEvent m_OnAddScore;
+    private DataManager dataManager;
     private int score;
 
     public int Score
@@ -26,6 +27,7 @@ public class ScoreManager : MonoBehaviour
 
     private void Start()
     {
+        dataManager = DataManager.Instance;
         GameManager.Instance.m_OnRestart.AddListener(ResetScore);
     }
 

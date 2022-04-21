@@ -21,6 +21,8 @@ public class DataManager : MonoBehaviour
 
     public static DataManager Instance;
 
+    public UnityEvent m_OnFillLeaderboard;
+
     public User UserData
     {
         private set;
@@ -38,29 +40,27 @@ public class DataManager : MonoBehaviour
         private set;
         get;
     }
-
-    /*public int LeaderboardUserPosition
-    {
-        private set;
-        get;
-    }*/
-
+     
     private void Awake()
     {
         Instance = this;
+
+        if (m_OnFillLeaderboard == null)
+            m_OnFillLeaderboard = new UnityEvent();
     }
 
     private void Start()
     {
-
+        GameManager.Instance.m_OnGameOver.AddListener(OrderLeaderboard);
         if (Application.isEditor || Debug.isDebugBuild)
         {
             UserData = new User()
             {
-                bestScore = 18,
+                bestScore = 0,
                 lives = 3,
-                name = "Jorge"
+                name = "Pedro"
             };
+            GameManager.Instance.Lives = UserData.lives;
 
             LeaderboardData = new Leaderboard()
             {
@@ -78,7 +78,7 @@ public class DataManager : MonoBehaviour
                     new LeaderboardRow(){ place = 10, name="Cobo", score = 11 },
                 }
             };
-        }     
+        }
     }
 
     public void NotifyGameStart() => StartGame();
@@ -86,19 +86,75 @@ public class DataManager : MonoBehaviour
     public void SetUserData(string jsonData)
     {
         UserData = JsonUtility.FromJson<User>(jsonData);
-        //LeaderBoard.FillUserData(UserData);
+        GameManager.Instance.Lives = UserData.lives;
     }
 
     public void SetLeaderboardData(string jsonData)
     {
         LeaderboardData = JsonUtility.FromJson<Leaderboard>(jsonData);
-        //LeaderBoard.FillUsers();
+    }
+
+    public void OrderLeaderboard()
+    {
+        if (ScoreManager.Instance.Score > UserData.bestScore)
+            UserData.bestScore = ScoreManager.Instance.Score;
+
+        Leaderboard tempLeaderboard = new Leaderboard()
+        {
+            leaderboard = new List<LeaderboardRow>()
+        };
+
+        bool playerInserted = false;
+        bool playerFound = false;
+
+        foreach (LeaderboardRow row in LeaderboardData.leaderboard)
+        {
+            tempLeaderboard.leaderboard.Add(row);
+            LeaderboardRow currentRow = tempLeaderboard.leaderboard[tempLeaderboard.leaderboard.Count - 1];
+
+            if (!playerFound && !playerInserted)
+            {
+                if (row.score < UserData.bestScore)
+                {
+                    playerInserted = true;
+                    int index = tempLeaderboard.leaderboard.IndexOf(currentRow);
+                    tempLeaderboard.leaderboard.Insert(index, new LeaderboardRow()
+                    {
+                        name = UserData.name,
+                        score = UserData.bestScore,
+                        place = tempLeaderboard.leaderboard.Count,
+                    });
+                }
+                else if (row.name == UserData.name && !playerFound && !playerInserted)
+                {
+                    playerFound = true;
+                    row.score = UserData.bestScore;
+                }
+                else if (tempLeaderboard.leaderboard.Count == LeaderboardData.leaderboard.Count)
+                {
+                    tempLeaderboard.leaderboard.Add(new LeaderboardRow()
+                    {
+                        name = UserData.name,
+                        score = UserData.bestScore,
+                        place = tempLeaderboard.leaderboard.Count,
+                    });
+                }
+            }
+            else if (playerInserted && currentRow.name == UserData.name)
+            {
+                tempLeaderboard.leaderboard.Remove(currentRow);
+            }
+
+            currentRow.place = playerInserted ? currentRow.place + 1 : currentRow.place;
+        }
+
+        LeaderboardData = tempLeaderboard;
+        m_OnFillLeaderboard?.Invoke();
     }
 
     public void SetMessages(string jsonData)
     {
         GeppMessage = JsonUtility.FromJson<Message>(jsonData);
-        //GEPPMessagesWindow.Instance.FillMessage(GeppMessages[0].message);
     }
 
     public void SendResults()
@@ -125,7 +181,7 @@ public class DataManager : MonoBehaviour
         {
             minutes = minutes,
             seconds = seconds,
-            destination = GeppMessage.destination != null && GameManager.Instance.Lives == 0 ? GeppMessage.destination : null,
+            destination = GeppMessage != null && GameManager.Instance.Lives == 0 ? GeppMessage.destination : null,
         };
 
         string timeSpentJson = JsonUtility.ToJson(timeSpent);

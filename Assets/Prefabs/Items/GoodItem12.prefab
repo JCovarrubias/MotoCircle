@@ -105,7 +105,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 1
 --- !u!70 &9121787082674386109
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -120,7 +120,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.19419643, y: 0.70535713}
+  m_Size: {x: 0.27742347, y: 1.007653}
   m_Direction: 0
 --- !u!114 &5082408645986931658
 MonoBehaviour:

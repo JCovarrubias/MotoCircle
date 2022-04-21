@@ -38,8 +38,6 @@ public class ItemPool : MonoBehaviour
         int itemIndex = Random.Range(0, items[itemType].Count);
         ItemBehaviour item = items[itemType][itemIndex];
         items[itemType].Remove(item);
-
-        item.gameObject.SetActive(true);
         return item;
     }
 
@@ -59,8 +57,8 @@ public class ItemPool : MonoBehaviour
 
     private void ReturnItem(ItemBehaviour item)
     {
-        items[item.Type].Add(item);
         item.gameObject.SetActive(false);
+        items[item.Type].Add(item);
     }
 }
 

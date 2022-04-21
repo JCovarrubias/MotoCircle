@@ -89,7 +89,11 @@ namespace DigitalRubyShared
                 if (CanDrag(hit.gameObject))
                 {
                     // store the drag state along with an offset to reposition relative to the touch point and object center
-                    if (!GameManager.Instance.IsActive && GameManager.Instance.TutorialPlaying) GameManager.Instance.m_OnStart?.Invoke();
+                    if (!GameManager.Instance.IsActive && GameManager.Instance.TutorialPlaying)
+                    {
+                        GameManager.Instance.m_OnStart?.Invoke();
+                    }
+
                     DragState state = new DragState
                     {
                         GameObject = hit.gameObject,
@@ -110,12 +114,15 @@ namespace DigitalRubyShared
             {
                 if (draggingObjectsByTouchId.TryGetValue(touch.Id, out state))
                 {
+                    if (touch.X > Screen.width * 0.05f && touch.X < Screen.width * 0.95f)
+                    {
                     // position the object relative to the touch location and offset
                     Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(touch.X, touch.Y, 0.0f));
                     Vector3 newPos = (worldPos + state.Offset);
                     newPos.x = (DragX ? newPos.x : state.GameObject.transform.position.x);
                     newPos.y = (DragY ? newPos.y : state.GameObject.transform.position.y);
                     state.GameObject.transform.position = newPos;
+                    }
                 }
                 else if (!allTouchIds.Contains(touch.Id))
                 {

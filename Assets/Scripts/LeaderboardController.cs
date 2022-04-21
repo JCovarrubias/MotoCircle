@@ -8,9 +8,9 @@ public class LeaderboardController : MonoBehaviour
     [SerializeField] LeaderboardRowController playerRowPrefab;
     [SerializeField] GameObject container;
 
-    private void OnEnable()
+    private void Awake()
     {
-        FillLeaderboard();
+        DataManager.Instance.m_OnFillLeaderboard.AddListener(FillLeaderboard);
     }
 
     private void ResetContainer()

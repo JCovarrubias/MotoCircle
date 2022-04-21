@@ -13,6 +13,11 @@ public class TimerManager : MonoBehaviour
 
     private float timeElapsed;
 
+    private void Start()
+    {
+        GameManager.Instance.m_OnRestart.AddListener(RestartTimer);
+    }
+
     private void Update()
     {
         if (GameManager.Instance.IsActive)
@@ -24,5 +29,14 @@ public class TimerManager : MonoBehaviour
             GameTime = Minutes + ":" + temSeconds;
             timer.text = GameTime; 
         }
+    }
+
+    private void RestartTimer()
+    {
+        Minutes = 0;
+        Seconds = 0;
+        GameTime = "0:00";
+        timeElapsed = 0;
+        timer.text = GameTime;
     }
 }

@@ -18,7 +18,9 @@ public class ItemBehaviour : MonoBehaviour
     private void OnDisable()
     {
         if (itemTransalte != null)
+        {
             LeanTween.cancel(itemTransalte.id);
+        }
     }
 
     private void Awake()
@@ -36,7 +38,8 @@ public class ItemBehaviour : MonoBehaviour
 
     private void OnGameOver()
     {
-        m_OnCollision?.Invoke();
+        if (gameObject.activeSelf)
+            m_OnCollision?.Invoke();
     }
 }
 

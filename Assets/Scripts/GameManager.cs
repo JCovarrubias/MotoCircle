@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject titleScreen;
     [SerializeField] GameObject gameplayUI;
+    [SerializeField] GameObject livesPanel;
+    [SerializeField] AudioSource failure;
 
     public static GameManager Instance;
     private DataManager dataManager;
@@ -32,18 +34,33 @@ public class GameManager : MonoBehaviour
         m_OnRestart.AddListener(OnResetGame);
     }
 
+    private void Start()
+    {
+        if (dataManager.UserData.lives <= 0)
+        {
+            titleScreen.SetActive(false);
+            livesPanel.SetActive(true);
+        }
+    }
+
     private void OnStartGame()
     {
-        IsActive = true;
-        TutorialPlaying = false;
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
-            DataManager.Instance.NotifyGameStart();
+        if (!IsActive)
+        {
+            IsActive = true;
+            TutorialPlaying = false;
+
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
+                DataManager.Instance.NotifyGameStart();
+        }
     }
 
     private void OnGameOver()
     {
         IsActive = false;
-        Lives -= 1;
+        dataManager.UserData.lives -= 1;
+        Lives = dataManager.UserData.lives;
+        failure.Play();
         dataManager.SendResults();
     }
 
