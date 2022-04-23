@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ItemPool : MonoBehaviour
 {
-    [SerializeField] List<ItemBehaviour> rightItems;
-    [SerializeField] List<ItemBehaviour> wrongItems;
+    [SerializeField] ItemBehaviour rightItem;
+    [SerializeField] ItemBehaviour wrongItem;
     [SerializeField] GameObject itemsContainer;
 
     public static ItemPool Instance;
@@ -15,10 +15,7 @@ public class ItemPool : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
 
-    private void Start()
-    {
         items = new Dictionary<ItemType, List<ItemBehaviour>>()
         {
             { ItemType.RIGHT, new List<ItemBehaviour>() },
@@ -46,7 +43,7 @@ public class ItemPool : MonoBehaviour
         for (int index = 0; index < quantity; index++)
         {
             int itemIndex = Random.Range(0, 12);
-            ItemBehaviour itemPrefab = itemType == ItemType.RIGHT ? rightItems[itemIndex] : wrongItems[itemIndex];
+            ItemBehaviour itemPrefab = itemType == ItemType.RIGHT ? rightItem : wrongItem;
 
             ItemBehaviour item = Instantiate(itemPrefab, itemsContainer.transform);
             item.m_OnCollision.AddListener(() => ReturnItem(item));
@@ -57,6 +54,7 @@ public class ItemPool : MonoBehaviour
 
     private void ReturnItem(ItemBehaviour item)
     {
+        item.Point.m_Emptyoint?.Invoke();
         item.gameObject.SetActive(false);
         items[item.Type].Add(item);
     }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b552e3c4a42f8cd47aa5a9750ee08816
+guid: 7211a9e2db52254479f04c19a816ddbf
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -7,7 +7,16 @@ TextureImporter:
     second: logo_0
   - first:
       213: 5470614613321624601
-    second: logo_1
+    second: logo
+  - first:
+      213: 4560591551370500262
+    second: logo_2
+  - first:
+      213: 6640445872580291462
+    second: tap_02
+  - first:
+      213: 7220771215297418599
+    second: tap_01
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -52,7 +61,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 256
+  spritePixelsToUnits: 192
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -124,10 +133,10 @@ TextureImporter:
       name: logo_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 227
-        width: 937
-        height: 543
+        x: 57
+        y: 366
+        width: 225
+        height: 337
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -142,13 +151,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: logo_1
+      name: logo
       rect:
         serializedVersion: 2
-        x: 206
-        y: 16
-        width: 541
-        height: 203
+        x: 434
+        y: 313
+        width: 943
+        height: 712
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,6 +167,69 @@ TextureImporter:
       bones: []
       spriteID: 91ca81a91078beb40800000000000000
       internalID: 5470614613321624601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: logo_2
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 70
+        width: 185
+        height: 229
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a816195ad97a4f30800000000000000
+      internalID: 4560591551370500262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tap_02
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 74
+        width: 343
+        height: 183
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68b6b59a65a972c50800000000000000
+      internalID: 6640445872580291462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tap_01
+      rect:
+        serializedVersion: 2
+        x: 787
+        y: 74
+        width: 344
+        height: 183
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7651b2cb925553460800000000000000
+      internalID: 7220771215297418599
       vertices: []
       indices: 
       edges: []

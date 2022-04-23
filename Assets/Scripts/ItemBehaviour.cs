@@ -6,6 +6,10 @@ using UnityEngine.Events;
 public class ItemBehaviour : MonoBehaviour
 {
     [SerializeField] ItemType type;
+    public SpawnPoint Point
+    {
+        get; set;
+    }
 
     public ItemType Type
     {
