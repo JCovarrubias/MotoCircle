@@ -196,10 +196,9 @@ public class Spawner : MonoBehaviour
 
     private void AdjustDifficulty()
     {
-        if (ScoreManager.Instance.Score % 10 == 0)
-        {
-            if (itemsLimit < 6f) itemsLimit += 1;
-            if (replaceObstacleProb < 70f) replaceObstacleProb += 5;
-        }
+        if (ScoreManager.Instance.Score % 10 == 0 && itemsLimit < 6f)
+            itemsLimit += 1;
+
+        if (ScoreManager.Instance.Score % 5 == 0 &&  replaceObstacleProb < 70f) replaceObstacleProb += 5;
     }
 }

@@ -4,11 +4,32 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] Animator dustAnimator; 
+
     PlayerBehaviour playerBehaviour;
+
+    private void OnEnable()
+    {
+        if (GameManager.Instance.IsActive)
+            dustAnimator.gameObject.SetActive(true);
+    }
 
     private void Start()
     {
-        playerBehaviour = PlayerBehaviour.Instance;    
+        playerBehaviour = PlayerBehaviour.Instance;
+        GameManager.Instance.m_OnStart.AddListener(OnStartGame);
+        GameManager.Instance.m_OnGameOver.AddListener(OnGameOver);
+    }
+
+    private void OnStartGame()
+    {
+        dustAnimator.gameObject.SetActive(true);
+        dustAnimator.Play("dust");
+    }
+
+    private void OnGameOver()
+    {
+        dustAnimator.gameObject.SetActive(false);
     }
 
     public void OnTriggerEnter2D(Collider2D collision)

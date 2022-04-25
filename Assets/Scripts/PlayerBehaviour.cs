@@ -11,6 +11,8 @@ public class PlayerBehaviour : MonoBehaviour
 
     [SerializeField] AudioSource rightItemSound;
     [SerializeField] AudioSource wrongItemSound;
+    [SerializeField] AudioSource tapSound;
+    [SerializeField] AudioSource bikeSound;
 
     public UnityEvent m_OnPlayerAtIndex;
 
@@ -37,6 +39,7 @@ public class PlayerBehaviour : MonoBehaviour
         gameManager = GameManager.Instance;
         gameManager.m_OnRestart.AddListener(initPlayer);
         ScoreManager.Instance.m_OnAddScore.AddListener(AdjustPlayerSpeed);
+        gameManager.m_OnGameOver.AddListener(() => bikeSound.Stop());
         initPlayer();
     }
 
@@ -53,11 +56,15 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (gameManager.IsActive)
         {
+            tapSound.Play();
             outsidePlayer.SetActive(!outsidePlayer.activeSelf);
             insidePlayer.SetActive(!insidePlayer.activeSelf);
         }
         else if (gameManager.TutorialPlaying)
+        {
+            bikeSound.Play();
             gameManager.m_OnStart?.Invoke();
+        }
     }
 
     private void initPlayer()
