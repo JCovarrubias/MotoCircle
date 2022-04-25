@@ -31,16 +31,12 @@ public class GameManager : MonoBehaviour
 
         m_OnStart.AddListener(OnStartGame);
         m_OnGameOver.AddListener(OnGameOver);
-        m_OnRestart.AddListener(OnResetGame);
+        m_OnRestart.AddListener(InitGamePanels);
     }
 
     private void Start()
     {
-        if (dataManager.UserData.lives <= 0)
-        {
-            titleScreen.SetActive(false);
-            livesPanel.SetActive(true);
-        }
+        InitGamePanels();
     }
 
     private void OnStartGame()
@@ -64,9 +60,10 @@ public class GameManager : MonoBehaviour
         dataManager.SendResults();
     }
 
-    private void OnResetGame()
+    private void InitGamePanels()
     {
-        titleScreen.SetActive(true);
+        titleScreen.SetActive(!(dataManager.UserData.lives <= 0));
+        livesPanel.SetActive(dataManager.UserData.lives <= 0);
         gameplayUI.SetActive(false);
     }
 }

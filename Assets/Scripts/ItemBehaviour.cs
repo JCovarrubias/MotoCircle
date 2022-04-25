@@ -49,6 +49,7 @@ public class ItemBehaviour : MonoBehaviour
 
 public enum ItemType
 {
+    None,
     RIGHT,
     WRONG
 }

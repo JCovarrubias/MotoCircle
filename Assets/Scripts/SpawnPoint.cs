@@ -16,6 +16,11 @@ public class SpawnPoint : MonoBehaviour
         get; set;
     }
 
+    public int Index
+    {
+        get; set;
+    }
+
     private void Awake()
     {
         if (m_Emptyoint == null)

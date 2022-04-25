@@ -114,7 +114,12 @@ public class DataManager : MonoBehaviour
 
             if (!playerFound && !playerInserted)
             {
-                if (row.score < UserData.bestScore)
+                if (row.name == UserData.name)
+                {
+                    playerFound = true;
+                    row.score = UserData.bestScore;
+                }
+                else if (row.score < UserData.bestScore)
                 {
                     playerInserted = true;
                     int index = tempLeaderboard.leaderboard.IndexOf(currentRow);
@@ -125,27 +130,23 @@ public class DataManager : MonoBehaviour
                         place = tempLeaderboard.leaderboard.Count,
                     });
                 }
-                else if (row.name == UserData.name && !playerFound && !playerInserted)
-                {
-                    playerFound = true;
-                    row.score = UserData.bestScore;
-                }
                 else if (tempLeaderboard.leaderboard.Count == LeaderboardData.leaderboard.Count)
                 {
+                    playerInserted = true;
                     tempLeaderboard.leaderboard.Add(new LeaderboardRow()
                     {
                         name = UserData.name,
                         score = UserData.bestScore,
-                        place = tempLeaderboard.leaderboard.Count,
+                        place = tempLeaderboard.leaderboard.Count + 1,
                     });
                 }
             }
-            else if (playerInserted && currentRow.name == UserData.name)
+            else if (currentRow.name == UserData.name)
             {
                 tempLeaderboard.leaderboard.Remove(currentRow);
             }
 
-            currentRow.place = playerInserted ? currentRow.place + 1 : currentRow.place;
+            currentRow.place = tempLeaderboard.leaderboard.IndexOf(currentRow) + 1;
         }
 
         LeaderboardData = tempLeaderboard;

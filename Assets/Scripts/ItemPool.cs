@@ -54,7 +54,11 @@ public class ItemPool : MonoBehaviour
 
     private void ReturnItem(ItemBehaviour item)
     {
-        item.Point.m_Emptyoint?.Invoke();
+        if (item.Point)
+        {
+            item.Point.m_Emptyoint?.Invoke();
+            item.Point = null;
+        }
         item.gameObject.SetActive(false);
         items[item.Type].Add(item);
     }
